@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "leaflet/dist/leaflet.css";
+
+:root {
+  --background: #0B0F19;
+  --foreground: #F1F5F9;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom modern scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B0F19;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1F293D;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Leaflet Map overrides for sleek dark command center */
+.leaflet-container {
+  background: #0B0F19 !important;
+  font-family: inherit;
+}
+
+.leaflet-popup-content-wrapper {
+  background: #111827 !important;
+  color: #F1F5F9 !important;
+  border: 1px solid #1F293D !important;
+  border-radius: 8px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: #111827 !important;
+}
+
+.leaflet-popup-content {
+  margin: 12px !important;
+  line-height: 1.4 !important;
+}
+
+/* Pulse animation for high risk zones */
+@keyframes ringPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.9;
+  }
+  70% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+}
+
+.marker-pulse-critical {
+  position: relative;
+}
+.marker-pulse-critical::after {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(220, 38, 38, 0.5);
+  animation: ringPulse 2s infinite ease-out;
+  pointer-events: none;
+}
