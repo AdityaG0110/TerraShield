@@ -33,14 +33,14 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
 
   return (
     <div
-      className={`relative overflow-hidden rounded-xl border p-5 backdrop-blur-md transition-all ${
+      className={`relative overflow-hidden rounded-xl border p-5 transition-all shadow-xs ${
         isTopRanked
-          ? "border-cyan-500/50 bg-gradient-to-b from-[#16253B] to-[#121927] shadow-lg shadow-cyan-950/20"
-          : "border-slate-800 bg-[#121927] hover:border-slate-700"
+          ? "border-[#164E3A] bg-white ring-2 ring-[#164E3A]/10 shadow-md"
+          : "border-[#EAECF0] bg-white hover:border-[#D0D5DD]"
       }`}
     >
       {isTopRanked && (
-        <div className="absolute -right-12 top-6 rotate-45 bg-gradient-to-r from-cyan-500 to-blue-600 px-12 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-md">
+        <div className="absolute -right-12 top-6 rotate-45 bg-[#164E3A] px-12 py-1 text-[10px] font-bold uppercase tracking-wider text-white shadow-xs">
           Recommended
         </div>
       )}
@@ -49,21 +49,27 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
       <div className="flex items-start justify-between pr-14">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded bg-slate-800 font-mono text-xs font-bold text-slate-300 border border-slate-700">
+            <span
+              className={`flex h-6 w-6 items-center justify-center rounded-md font-mono text-xs font-bold ${
+                isTopRanked
+                  ? "bg-[#164E3A] text-white"
+                  : "bg-[#F9FAFB] text-[#344054] border border-[#EAECF0]"
+              }`}
+            >
               #{rank}
             </span>
-            <h4 className="text-sm font-bold text-white leading-tight">
+            <h4 className="text-sm font-bold text-[#101828] leading-tight">
               {candidate.candidate_name}
             </h4>
           </div>
-          <div className="flex items-center gap-3 mt-1.5 text-xs text-slate-400 font-mono">
-            <span className="flex items-center gap-1">
-              <Navigation className="h-3 w-3 text-cyan-400" />
+          <div className="flex flex-wrap items-center gap-3 mt-1.5 text-xs text-[#667085]">
+            <span className="flex items-center gap-1 font-mono">
+              <Navigation className="h-3 w-3 text-[#164E3A]" />
               {candidate.distance_km} km away
             </span>
             <span>•</span>
-            <span className="flex items-center gap-1">
-              <MapPin className="h-3 w-3 text-emerald-400" />
+            <span className="flex items-center gap-1 font-mono">
+              <MapPin className="h-3 w-3 text-[#E11D48]" />
               {candidate.candidate_latitude.toFixed(3)}°, {candidate.candidate_longitude.toFixed(3)}°
             </span>
           </div>
@@ -71,15 +77,15 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
       </div>
 
       {/* Composite Score Banner */}
-      <div className="mt-4 flex items-center justify-between rounded-lg bg-slate-900/80 p-3 border border-slate-800/80">
-        <span className="text-xs font-medium text-slate-400">
+      <div className="mt-4 flex items-center justify-between rounded-lg bg-[#F9FAFB] p-3 border border-[#EAECF0]">
+        <span className="text-xs font-medium text-[#667085]">
           Suitability Index
         </span>
         <div className="flex items-baseline gap-1">
-          <span className="text-2xl font-bold font-mono text-white">
+          <span className="text-2xl font-bold font-mono text-[#101828]">
             {candidate.recommendation_score.toFixed(1)}
           </span>
-          <span className="text-xs text-slate-400 font-mono">/100</span>
+          <span className="text-xs text-[#667085] font-mono">/ 100</span>
         </div>
       </div>
 
@@ -87,16 +93,16 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
       <div className="mt-4 space-y-2.5 text-xs">
         {/* Capacity (40%) */}
         <div>
-          <div className="flex justify-between text-slate-300 mb-1">
-            <span className="flex items-center gap-1.5 text-[11px] text-slate-400">
-              <Users className="h-3 w-3 text-blue-400" />
+          <div className="flex justify-between text-[#344054] mb-1">
+            <span className="flex items-center gap-1.5 text-[11px] text-[#667085]">
+              <Users className="h-3 w-3 text-[#2563EB]" />
               Carrying Capacity (40%)
             </span>
-            <span className="font-mono font-semibold">{candidate.capacity_score.toFixed(1)}%</span>
+            <span className="font-mono font-bold text-[#101828]">{candidate.capacity_score.toFixed(1)}%</span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
+          <div className="h-1.5 w-full rounded-full bg-[#EAECF0] overflow-hidden">
             <div
-              className="h-full bg-blue-500 rounded-full"
+              className="h-full bg-[#2563EB] rounded-full"
               style={{ width: `${Math.min(candidate.capacity_score, 100)}%` }}
             />
           </div>
@@ -104,16 +110,16 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
 
         {/* Distance Proximity (30%) */}
         <div>
-          <div className="flex justify-between text-slate-300 mb-1">
-            <span className="flex items-center gap-1.5 text-[11px] text-slate-400">
-              <Navigation className="h-3 w-3 text-cyan-400" />
+          <div className="flex justify-between text-[#344054] mb-1">
+            <span className="flex items-center gap-1.5 text-[11px] text-[#667085]">
+              <Navigation className="h-3 w-3 text-[#0891B2]" />
               Proximity Score (30%)
             </span>
-            <span className="font-mono font-semibold">{candidate.distance_score.toFixed(1)}%</span>
+            <span className="font-mono font-bold text-[#101828]">{candidate.distance_score.toFixed(1)}%</span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
+          <div className="h-1.5 w-full rounded-full bg-[#EAECF0] overflow-hidden">
             <div
-              className="h-full bg-cyan-500 rounded-full"
+              className="h-full bg-[#0891B2] rounded-full"
               style={{ width: `${Math.min(candidate.distance_score, 100)}%` }}
             />
           </div>
@@ -121,16 +127,16 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
 
         {/* Accessibility (30%) */}
         <div>
-          <div className="flex justify-between text-slate-300 mb-1">
-            <span className="flex items-center gap-1.5 text-[11px] text-slate-400">
-              <Activity className="h-3 w-3 text-emerald-400" />
+          <div className="flex justify-between text-[#344054] mb-1">
+            <span className="flex items-center gap-1.5 text-[11px] text-[#667085]">
+              <Activity className="h-3 w-3 text-[#164E3A]" />
               Infrastructure & Road Access (30%)
             </span>
-            <span className="font-mono font-semibold">{candidate.accessibility_score.toFixed(1)}%</span>
+            <span className="font-mono font-bold text-[#101828]">{candidate.accessibility_score.toFixed(1)}%</span>
           </div>
-          <div className="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
+          <div className="h-1.5 w-full rounded-full bg-[#EAECF0] overflow-hidden">
             <div
-              className="h-full bg-emerald-500 rounded-full"
+              className="h-full bg-[#164E3A] rounded-full"
               style={{ width: `${Math.min(candidate.accessibility_score, 100)}%` }}
             />
           </div>
@@ -138,14 +144,14 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
       </div>
 
       {/* Footer / Action */}
-      <div className="mt-5 pt-4 border-t border-slate-800 flex items-center justify-between">
+      <div className="mt-5 pt-3.5 border-t border-[#EAECF0] flex items-center justify-between">
         <span
           className={`inline-flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-full border ${
             status === "approved"
-              ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/30"
+              ? "bg-[#ECFDF3] text-[#027A48] border-[#A6F4C5]"
               : status === "in_progress"
-              ? "bg-blue-500/10 text-blue-400 border-blue-500/30"
-              : "bg-amber-500/10 text-amber-400 border-amber-500/30"
+              ? "bg-[#EFF8FF] text-[#175CD3] border-[#B2DDFF]"
+              : "bg-[#FFFAEB] text-[#B54708] border-[#FEDF89]"
           }`}
         >
           {status === "approved" ? (
@@ -160,14 +166,14 @@ export default function RecommendationCard({ candidate, rank, onStatusChange }: 
           <button
             onClick={handleApprove}
             disabled={loading}
-            className="flex items-center gap-1.5 rounded-lg bg-emerald-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-md hover:bg-emerald-500 transition-colors disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-xl bg-[#164E3A] px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs hover:bg-[#0E3326] transition-colors disabled:opacity-50"
           >
             <CheckCircle className="h-3.5 w-3.5" />
             <span>Approve Relocation</span>
           </button>
         ) : (
-          <span className="text-xs text-emerald-400 font-medium">
-            Relocation Order Signed
+          <span className="text-xs text-[#027A48] font-semibold">
+            Order Approved
           </span>
         )}
       </div>

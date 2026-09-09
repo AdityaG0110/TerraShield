@@ -28,7 +28,7 @@ export default function SettlementsPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col">
+    <div className="min-h-screen bg-[#F4F6F8] text-[#101828] flex flex-col">
       <Navbar />
 
       <div className="flex flex-1 overflow-hidden">
@@ -36,18 +36,18 @@ export default function SettlementsPage() {
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
           <div>
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#101828]">
               Habitations & Vulnerability Registry
             </h1>
-            <p className="text-xs text-slate-400 mt-1">
-              Searchable catalog of all monitored habitations across Bahraich, Gonda, and Shravasti with live hazard indices and re-scoring actions
+            <p className="text-xs text-[#667085] mt-1">
+              Searchable catalog of monitored habitations with live NDMA hazard indices, demographic carrying capacity, and relocation actions
             </p>
           </div>
 
           {loading ? (
-            <div className="flex h-64 items-center justify-center rounded-xl border border-slate-800 bg-[#121927]">
-              <div className="flex items-center gap-3 text-xs text-slate-400 font-mono">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
+            <div className="flex h-64 items-center justify-center rounded-xl border border-[#EAECF0] bg-white shadow-xs">
+              <div className="flex items-center gap-3 text-xs text-[#667085] font-mono">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#164E3A] border-t-transparent" />
                 <span>Loading Habitation Registry...</span>
               </div>
             </div>

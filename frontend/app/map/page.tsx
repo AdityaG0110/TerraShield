@@ -36,7 +36,7 @@ export default function MapPage() {
   }, [settlements]);
 
   return (
-    <div className="h-screen bg-[#0B0F19] text-white flex flex-col overflow-hidden">
+    <div className="h-screen bg-[#F4F6F8] text-[#101828] flex flex-col overflow-hidden">
       <Navbar
         selectedDistrict={district}
         onDistrictChange={setDistrict}
@@ -47,22 +47,22 @@ export default function MapPage() {
         <Sidebar />
 
         <main className="flex-1 relative overflow-hidden flex flex-col">
-          {/* Sub-header Bar */}
-          <div className="flex items-center justify-between border-b border-slate-800 bg-[#0E1524] px-6 py-2.5 z-10">
-            <div className="flex items-center gap-3">
-              <span className="flex h-2.5 w-2.5 rounded-full bg-emerald-400"></span>
-              <span className="text-xs font-semibold text-white uppercase tracking-wider">
+          {/* Sub-header Bar matching Figma Executive Style */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#EAECF0] bg-white px-4 sm:px-6 py-2.5 z-10 shadow-xs">
+            <div className="flex items-center gap-2.5">
+              <span className="flex h-2.5 w-2.5 rounded-full bg-[#164E3A]"></span>
+              <span className="text-xs font-bold text-[#101828] uppercase tracking-wider">
                 Full-Spectrum GIS Red-Zone Cartography
               </span>
-              <span className="text-xs text-slate-400 hidden sm:inline">
+              <span className="text-xs text-[#667085] hidden sm:inline">
                 ({settlements.length} Geotagged Settlements in {district})
               </span>
             </div>
 
             <div className="flex items-center gap-2 text-xs">
-              <span className="text-slate-400">Tile Provider:</span>
-              <span className="font-mono text-cyan-400 bg-slate-900 border border-slate-800 px-2 py-0.5 rounded">
-                CartoDB High-Contrast Satellite Overlay
+              <span className="text-[#667085] hidden md:inline">Tile Provider:</span>
+              <span className="font-mono text-[#164E3A] bg-[#ECFDF3] border border-[#A6F4C5] px-2 py-0.5 rounded-md text-[11px] font-semibold">
+                CartoDB Voyager High-Contrast
               </span>
             </div>
           </div>
@@ -72,8 +72,8 @@ export default function MapPage() {
             <RiskMap
               settlements={settlements}
               height="100%"
-              initialCenter={[27.50, 81.80]}
-              initialZoom={9}
+              initialCenter={[26.0, 93.5]}
+              initialZoom={7}
               interactiveSideDrawer={true}
             />
           </div>

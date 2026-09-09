@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Search, MapPin, Bell, ChevronDown } from "lucide-react";
+import { Search, MapPin, Bell, ChevronDown, Menu } from "lucide-react";
 import RoleSelector from "./RoleSelector";
+import { useSidebar } from "./SidebarContext";
 
 interface Props {
   selectedDistrict?: string;
@@ -25,14 +26,13 @@ export default function Navbar({
     name: "Ankit Sharma",
     role: "State Administrator",
   });
+  const { toggle } = useSidebar();
 
   useEffect(() => {
-    // Current date & time formatting matching Figma
     const now = new Date();
     setCurrentDate(now.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" }));
     setCurrentTime(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
 
-    // Check saved user
     const saved = localStorage.getItem("terrashield_user");
     if (saved) {
       try {
@@ -58,31 +58,41 @@ export default function Navbar({
     : defaultDistricts;
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-[#EAECF0] bg-white px-6">
-      {/* Search Input Bar (Figma: "Search location, habitation or district...") */}
-      <div className="flex items-center flex-1 max-w-md">
-        <div className="relative w-full">
-          <Search className="absolute left-3.5 top-2.5 h-4 w-4 text-[#98A2B3]" />
+    <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-[#EAECF0] bg-white px-3 sm:px-6 shadow-xs">
+      {/* Left: Mobile Hamburger & Search Input */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-lg">
+        {/* Mobile Hamburger Button */}
+        <button
+          onClick={toggle}
+          aria-label="Open Navigation Menu"
+          className="flex md:hidden h-9 w-9 items-center justify-center rounded-lg border border-[#D0D5DD] bg-white text-[#344054] hover:bg-[#F9FAFB] active:bg-[#F2F4F7] transition-colors shrink-0"
+        >
+          <Menu className="h-5 w-5" />
+        </button>
+
+        {/* Search Bar */}
+        <div className="relative w-full max-w-xs sm:max-w-md">
+          <Search className="absolute left-3 top-2.5 h-4 w-4 text-[#98A2B3]" />
           <input
             type="text"
             placeholder="Search location, habitation or district..."
             value={searchQuery || ""}
             onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
-            className="w-full rounded-xl border border-[#D0D5DD] bg-white py-2 pl-10 pr-4 text-xs text-[#101828] placeholder-[#98A2B3] focus:border-[#164E3A] focus:outline-none shadow-xs"
+            className="w-full rounded-xl border border-[#D0D5DD] bg-white py-2 pl-9 pr-3 text-xs text-[#101828] placeholder-[#98A2B3] focus:border-[#164E3A] focus:outline-none transition-colors"
           />
         </div>
       </div>
 
       {/* Right Controls */}
-      <div className="flex items-center gap-5">
-        {/* State / Location Selector */}
+      <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+        {/* State / Location Selector (hidden on very small screens) */}
         {onDistrictChange && (
-          <div className="flex items-center gap-1.5 rounded-xl border border-[#EAECF0] bg-[#F9FAFB] px-3 py-1.5 text-xs text-[#344054]">
-            <MapPin className="h-3.5 w-3.5 text-[#E11D48]" />
+          <div className="hidden sm:flex items-center gap-1.5 rounded-xl border border-[#EAECF0] bg-[#F9FAFB] px-2.5 py-1.5 text-xs text-[#344054]">
+            <MapPin className="h-3.5 w-3.5 text-[#E11D48] shrink-0" />
             <select
               value={selectedDistrict}
               onChange={(e) => onDistrictChange(e.target.value)}
-              className="bg-transparent font-semibold text-[#344054] focus:outline-none cursor-pointer text-xs"
+              className="bg-transparent font-semibold text-[#344054] focus:outline-none cursor-pointer text-xs max-w-[110px] sm:max-w-none truncate"
             >
               {districts.map((d) => (
                 <option key={d} value={d} className="bg-white text-[#101828]">
@@ -90,7 +100,7 @@ export default function Navbar({
                 </option>
               ))}
             </select>
-            <ChevronDown className="h-3.5 w-3.5 text-[#667085]" />
+            <ChevronDown className="h-3.5 w-3.5 text-[#667085] shrink-0" />
           </div>
         )}
 
@@ -103,11 +113,11 @@ export default function Navbar({
         </div>
 
         {/* User Avatar & Name */}
-        <div className="flex items-center gap-3 border-l border-[#EAECF0] pl-4">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#164E3A] text-xs font-bold text-white">
+        <div className="flex items-center gap-2.5 sm:border-l sm:border-[#EAECF0] sm:pl-3">
+          <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#164E3A] text-xs font-bold text-white shadow-xs shrink-0">
             {userProfile.name.charAt(0)}
           </div>
-          <div className="text-left hidden sm:block">
+          <div className="text-left hidden md:block">
             <p className="text-xs font-bold text-[#101828] leading-tight">
               {userProfile.name}
             </p>
@@ -118,14 +128,17 @@ export default function Navbar({
         </div>
 
         {/* Date & Time Widget */}
-        <div className="text-right hidden md:block text-[11px] text-[#667085] border-l border-[#EAECF0] pl-4">
+        <div className="text-right hidden lg:block text-[11px] text-[#667085] border-l border-[#EAECF0] pl-3">
           <p className="font-semibold text-[#344054] leading-tight">{currentDate || "Tue, 9 Sep 2025"}</p>
           <p className="font-mono text-[#667085] leading-tight">{currentTime || "11:24 AM"}</p>
         </div>
 
         {/* Quick Persona Switcher */}
-        <RoleSelector />
+        <div className="hidden sm:block">
+          <RoleSelector />
+        </div>
       </div>
     </header>
   );
 }
+

@@ -16,35 +16,37 @@ import {
   Truck,
   Database,
   Settings,
-  Shield,
   Leaf,
+  X,
 } from "lucide-react";
+import { useSidebar } from "./SidebarContext";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { isOpen, close } = useSidebar();
 
   const navItems = [
     { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, exact: true },
     { label: "Hazard Map", href: "/map", icon: Map },
-    { label: "Red Zones", href: "/settlements?risk_category=critical", icon: CircleDot, iconColor: "text-red-500" },
+    { label: "Red Zones", href: "/red-zones", icon: CircleDot, iconColor: "text-red-500" },
     { label: "Vulnerable Habitations", href: "/settlements", icon: Home, iconColor: "text-orange-500" },
-    { label: "Relocation Sites", href: "/settlements", icon: MapPin, iconColor: "text-red-400" },
-    { label: "Carrying Capacity", href: "/dashboard", icon: Scale, iconColor: "text-amber-500" },
-    { label: "AI Insights", href: "/analytics", icon: Sparkles, iconColor: "text-purple-500" },
-    { label: "Alerts", href: "/dashboard", icon: Bell, iconColor: "text-amber-500", badge: 3 },
-    { label: "Reports", href: "/analytics", icon: FileText, iconColor: "text-blue-500" },
-    { label: "Field Operations", href: "/settlements", icon: Truck, iconColor: "text-emerald-500" },
-    { label: "Data Sources", href: "/analytics", icon: Database, iconColor: "text-indigo-500" },
-    { label: "Settings", href: "/login", icon: Settings, iconColor: "text-slate-400" },
+    { label: "Relocation Sites", href: "/relocation", icon: MapPin, iconColor: "text-rose-500" },
+    { label: "Carrying Capacity", href: "/carrying-capacity", icon: Scale, iconColor: "text-amber-500" },
+    { label: "AI Insights", href: "/ai-insights", icon: Sparkles, iconColor: "text-purple-500" },
+    { label: "Alerts", href: "/alerts", icon: Bell, iconColor: "text-amber-500", badge: 3 },
+    { label: "Reports", href: "/reports", icon: FileText, iconColor: "text-blue-500" },
+    { label: "Field Operations", href: "/field-operations", icon: Truck, iconColor: "text-emerald-500" },
+    { label: "Data Sources", href: "/data-sources", icon: Database, iconColor: "text-indigo-500" },
+    { label: "Settings", href: "/settings", icon: Settings, iconColor: "text-slate-400" },
   ];
 
-  return (
-    <aside className="w-64 shrink-0 bg-white border-r border-[#EAECF0] flex flex-col justify-between select-none min-h-screen">
+  const renderNavContent = (isMobileDrawer: boolean = false) => (
+    <div className="flex flex-col justify-between h-full">
       <div>
         {/* Brand Logo & Tagline */}
-        <div className="p-5 border-b border-[#F2F4F7]">
-          <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#164E3A] text-white shadow-sm">
+        <div className="p-4 sm:p-5 border-b border-[#F2F4F7] flex items-center justify-between">
+          <Link href="/dashboard" onClick={() => isMobileDrawer && close()} className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#164E3A] text-white shadow-sm shrink-0">
               <Leaf className="h-5 w-5" />
             </div>
             <div>
@@ -58,20 +60,31 @@ export default function Sidebar() {
               </p>
             </div>
           </Link>
+
+          {isMobileDrawer && (
+            <button
+              onClick={close}
+              className="p-1.5 rounded-lg text-[#667085] hover:bg-[#F2F4F7] md:hidden"
+              aria-label="Close Sidebar"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          )}
         </div>
 
         {/* Navigation Items */}
-        <nav className="p-3 space-y-1">
+        <nav className="p-3 space-y-1 overflow-y-auto max-h-[calc(100vh-210px)]">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = item.exact
               ? pathname === item.href
-              : pathname.startsWith(item.href) && item.href !== "/dashboard";
+              : pathname.startsWith(item.href);
 
             return (
               <Link
                 key={item.label}
                 href={item.href}
+                onClick={() => isMobileDrawer && close()}
                 className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all ${
                   isActive
                     ? "bg-[#164E3A] text-white shadow-sm"
@@ -106,6 +119,32 @@ export default function Sidebar() {
           <p className="text-[10px] text-slate-400 font-mono mt-1.5">TerraSHIELD v2.1</p>
         </div>
       </div>
-    </aside>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Desktop Persistent Sidebar */}
+      <aside className="hidden md:flex w-64 shrink-0 bg-white border-r border-[#EAECF0] flex-col justify-between select-none min-h-screen">
+        {renderNavContent(false)}
+      </aside>
+
+      {/* Mobile Slide-Over Drawer with Backdrop */}
+      {isOpen && (
+        <div className="fixed inset-0 z-50 md:hidden flex">
+          {/* Backdrop Overlay */}
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity animate-in fade-in"
+            onClick={close}
+            aria-hidden="true"
+          />
+
+          {/* Drawer Menu */}
+          <div className="relative z-50 w-72 max-w-[85vw] bg-white h-full shadow-2xl flex flex-col justify-between animate-in slide-in-from-left duration-200">
+            {renderNavContent(true)}
+          </div>
+        </div>
+      )}
+    </>
   );
 }

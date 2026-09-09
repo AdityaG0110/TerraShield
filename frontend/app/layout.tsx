@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SidebarProvider } from "../components/SidebarContext";
 
 export const metadata: Metadata = {
   title: "TerraShield — AI Hazard Risk Intelligence & Relocation Decision Support",
@@ -12,10 +13,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#0B0F19] text-slate-100 antialiased selection:bg-cyan-500 selection:text-white">
-        {children}
+    <html lang="en">
+      <body className="min-h-screen bg-[#F4F6F8] text-[#101828] font-sans antialiased selection:bg-[#164E3A] selection:text-white">
+        <SidebarProvider>
+          {children}
+        </SidebarProvider>
       </body>
     </html>
   );
 }
+

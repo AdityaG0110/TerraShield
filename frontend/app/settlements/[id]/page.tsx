@@ -58,7 +58,7 @@ export default function SettlementProfilePage() {
       const res = await recomputeSettlementRisk(id);
       setRecomputeMsg(res.message);
       await loadDetail();
-      setTimeout(() => setRecomputeMsg(null), 4000);
+      setTimeout(() => setRecomputeMsg(null), 5000);
     } catch (err) {
       console.error(err);
     } finally {
@@ -68,11 +68,11 @@ export default function SettlementProfilePage() {
 
   if (loading || !settlement) {
     return (
-      <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col">
+      <div className="min-h-screen bg-[#F4F6F8] text-[#101828] flex flex-col">
         <Navbar />
         <div className="flex flex-1 items-center justify-center">
-          <div className="flex items-center gap-3 text-xs text-slate-400 font-mono">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
+          <div className="flex items-center gap-3 text-xs text-[#667085] font-mono">
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#164E3A] border-t-transparent" />
             <span>Loading Habitation Profile & Telemetry Breakdown...</span>
           </div>
         </div>
@@ -87,74 +87,74 @@ export default function SettlementProfilePage() {
   const factorBreakdown = latestRisk ? latestRisk.factor_breakdown : [];
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col">
+    <div className="min-h-screen bg-[#F4F6F8] text-[#101828] flex flex-col">
       <Navbar />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
 
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
-          {/* Breadcrumb & Navigation */}
-          <div className="flex items-center justify-between">
+          {/* Breadcrumb & Top Actions */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <Link
               href="/settlements"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-cyan-400 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#667085] hover:text-[#164E3A] transition-colors"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
+              <ArrowLeft className="h-4 w-4" />
               <span>Back to Settlements Registry</span>
             </Link>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-2.5">
               <button
                 onClick={handleRecompute}
                 disabled={recomputing}
-                className="flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800 px-3.5 py-1.5 text-xs font-medium text-slate-200 hover:border-slate-500 hover:text-white transition-all disabled:opacity-50"
+                className="flex items-center gap-2 rounded-xl border border-[#D0D5DD] bg-white px-3.5 py-2 text-xs font-semibold text-[#344054] hover:bg-[#F9FAFB] transition-all disabled:opacity-50 shadow-xs"
               >
-                <RefreshCw className={`h-3.5 w-3.5 ${recomputing ? "animate-spin text-cyan-400" : ""}`} />
+                <RefreshCw className={`h-3.5 w-3.5 ${recomputing ? "animate-spin text-[#164E3A]" : ""}`} />
                 <span>{recomputing ? "Re-scoring..." : "Recompute Risk Index"}</span>
               </button>
 
               <Link
                 href={`/relocation/${settlement.id}`}
-                className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-orange-600 to-amber-600 px-4 py-1.5 text-xs font-bold text-white shadow-md shadow-orange-600/20 hover:from-orange-500 hover:to-amber-500 transition-all"
+                className="flex items-center gap-2 rounded-xl bg-[#164E3A] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#0E3326] transition-all"
               >
-                <Compass className="h-3.5 w-3.5" />
-                <span>Generate Relocation Recommendations</span>
+                <Compass className="h-4 w-4" />
+                <span>Evaluate Relocation Sites</span>
               </Link>
             </div>
           </div>
 
           {/* Toast Notification */}
           {recomputeMsg && (
-            <div className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-3 text-xs text-emerald-300 flex items-center gap-2 shadow-lg animate-in fade-in">
-              <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <div className="rounded-xl border border-[#A6F4C5] bg-[#ECFDF3] p-3 text-xs text-[#027A48] flex items-center gap-2 shadow-xs animate-in fade-in">
+              <CheckCircle2 className="h-4 w-4 text-[#12B76A]" />
               <span>{recomputeMsg}</span>
             </div>
           )}
 
           {/* Top Profile Header Card */}
-          <div className="rounded-xl border border-slate-800 bg-[#121927] p-6">
+          <div className="rounded-xl border border-[#EAECF0] bg-white p-5 sm:p-6 shadow-xs">
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <div className="flex flex-wrap items-center gap-3">
-                  <h1 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold text-[#101828]">
                     {settlement.name}
                   </h1>
                   <RiskCategoryBadge category={riskCategory} score={riskScore} showScore size="lg" />
                 </div>
 
-                <div className="flex flex-wrap items-center gap-4 text-xs text-slate-400 font-mono">
-                  <span className="flex items-center gap-1.5">
-                    <MapPin className="h-3.5 w-3.5 text-cyan-400" />
-                    {settlement.district}, {settlement.state}
+                <div className="flex flex-wrap items-center gap-3 text-xs text-[#667085]">
+                  <span className="flex items-center gap-1">
+                    <MapPin className="h-3.5 w-3.5 text-[#E11D48]" />
+                    <strong className="text-[#344054]">{settlement.district}</strong>, {settlement.state}
                   </span>
                   <span>•</span>
-                  <span>
-                    Coordinates: {settlement.latitude.toFixed(4)}°N, {settlement.longitude.toFixed(4)}°E
+                  <span className="font-mono">
+                    {settlement.latitude.toFixed(4)}°N, {settlement.longitude.toFixed(4)}°E
                   </span>
                   <span>•</span>
-                  <span className="flex items-center gap-1.5">
-                    <Users className="h-3.5 w-3.5 text-blue-400" />
+                  <span className="flex items-center gap-1 font-mono">
+                    <Users className="h-3.5 w-3.5 text-[#164E3A]" />
                     {settlement.population.toLocaleString()} Residents ({settlement.households} Households)
                   </span>
                   <span>•</span>
@@ -163,30 +163,30 @@ export default function SettlementProfilePage() {
               </div>
 
               {/* Big Risk Index Gauge Banner */}
-              <div className="flex items-center gap-5 rounded-xl border border-slate-700/80 bg-slate-900/90 px-6 py-4">
+              <div className="flex items-center gap-4 rounded-xl border border-[#EAECF0] bg-[#F9FAFB] px-5 py-4 shrink-0">
                 <div className="text-center">
-                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold block">
+                  <span className="text-[10px] uppercase tracking-wider text-[#667085] font-semibold block">
                     Composite Risk Score
                   </span>
                   <div className="flex items-baseline justify-center gap-1 mt-1">
-                    <span className="text-3xl font-black font-mono text-white">
+                    <span className="text-3xl font-black font-mono text-[#101828]">
                       {riskScore.toFixed(1)}
                     </span>
-                    <span className="text-xs text-slate-400 font-mono">/100</span>
+                    <span className="text-xs text-[#667085] font-mono">/ 100</span>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Natural-Language XAI Narrative (PRD Section 11 & 19.4) */}
+            {/* Natural-Language XAI Narrative */}
             {settlement.explanation && (
-              <div className="mt-5 rounded-lg border border-blue-900/40 bg-blue-950/20 p-4 text-xs text-blue-200 flex items-start gap-3">
-                <FileText className="h-4 w-4 text-cyan-400 shrink-0 mt-0.5" />
+              <div className="mt-5 rounded-xl border border-[#D1FADF] bg-[#F6FEF9] p-4 text-xs flex items-start gap-3">
+                <FileText className="h-4 w-4 text-[#164E3A] shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold text-cyan-300 block mb-0.5">
+                  <span className="font-bold text-[#164E3A] block mb-0.5">
                     Official NDMA-Auditable Risk Justification:
                   </span>
-                  <p className="leading-relaxed text-slate-300 font-sans">
+                  <p className="leading-relaxed text-[#344054]">
                     {settlement.explanation}
                   </p>
                 </div>
@@ -196,67 +196,67 @@ export default function SettlementProfilePage() {
 
           {/* Raw Hazard Parameters Grid */}
           {latestHazard && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              <div className="rounded-xl border border-slate-800 bg-[#121927] p-4">
-                <div className="flex items-center justify-between text-slate-400 text-xs">
-                  <span>Precipitation</span>
-                  <CloudRain className="h-4 w-4 text-cyan-400" />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 sm:gap-4">
+              <div className="rounded-xl border border-[#EAECF0] bg-white p-4 shadow-xs">
+                <div className="flex items-center justify-between text-[#667085] text-xs">
+                  <span className="font-medium">Precipitation</span>
+                  <CloudRain className="h-4 w-4 text-[#0284C7]" />
                 </div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-xl font-bold font-mono text-white">
+                  <span className="text-xl font-bold font-mono text-[#101828]">
                     {latestHazard.rainfall_mm}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">mm</span>
+                  <span className="text-xs text-[#667085] font-mono">mm</span>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1">
+                <p className="text-[10px] text-[#667085] mt-1">
                   Baseline threshold: 400mm
                 </p>
               </div>
 
-              <div className="rounded-xl border border-slate-800 bg-[#121927] p-4">
-                <div className="flex items-center justify-between text-slate-400 text-xs">
-                  <span>Slope Gradient</span>
-                  <Mountain className="h-4 w-4 text-amber-400" />
+              <div className="rounded-xl border border-[#EAECF0] bg-white p-4 shadow-xs">
+                <div className="flex items-center justify-between text-[#667085] text-xs">
+                  <span className="font-medium">Slope Gradient</span>
+                  <Mountain className="h-4 w-4 text-[#D97706]" />
                 </div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-xl font-bold font-mono text-white">
+                  <span className="text-xl font-bold font-mono text-[#101828]">
                     {latestHazard.slope_degrees}°
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">gradient</span>
+                  <span className="text-xs text-[#667085] font-mono">gradient</span>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1">
+                <p className="text-[10px] text-[#667085] mt-1">
                   Landslide trigger &gt; 25°
                 </p>
               </div>
 
-              <div className="rounded-xl border border-slate-800 bg-[#121927] p-4">
-                <div className="flex items-center justify-between text-slate-400 text-xs">
-                  <span>Elevation</span>
-                  <Layers className="h-4 w-4 text-emerald-400" />
+              <div className="rounded-xl border border-[#EAECF0] bg-white p-4 shadow-xs">
+                <div className="flex items-center justify-between text-[#667085] text-xs">
+                  <span className="font-medium">Elevation</span>
+                  <Layers className="h-4 w-4 text-[#164E3A]" />
                 </div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-xl font-bold font-mono text-white">
+                  <span className="text-xl font-bold font-mono text-[#101828]">
                     {latestHazard.elevation_m}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">meters</span>
+                  <span className="text-xs text-[#667085] font-mono">meters</span>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1">
+                <p className="text-[10px] text-[#667085] mt-1">
                   Inundation vulnerable &lt; 20m
                 </p>
               </div>
 
-              <div className="rounded-xl border border-slate-800 bg-[#121927] p-4">
-                <div className="flex items-center justify-between text-slate-400 text-xs">
-                  <span>Habitation Density</span>
-                  <Users className="h-4 w-4 text-purple-400" />
+              <div className="rounded-xl border border-[#EAECF0] bg-white p-4 shadow-xs">
+                <div className="flex items-center justify-between text-[#667085] text-xs">
+                  <span className="font-medium">Habitation Density</span>
+                  <Users className="h-4 w-4 text-[#7C3AED]" />
                 </div>
                 <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-xl font-bold font-mono text-white">
+                  <span className="text-xl font-bold font-mono text-[#101828]">
                     {latestHazard.population_density.toFixed(0)}
                   </span>
-                  <span className="text-xs text-slate-400 font-mono">/km²</span>
+                  <span className="text-xs text-[#667085] font-mono">/km²</span>
                 </div>
-                <p className="text-[10px] text-slate-400 mt-1">
+                <p className="text-[10px] text-[#667085] mt-1">
                   High human exposure &gt; 1500
                 </p>
               </div>
