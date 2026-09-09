@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -25,16 +25,85 @@ import {
 } from "lucide-react";
 import HeroMapCard from "../components/HeroMapCard";
 
+interface NavItem {
+  id: string;
+  label: string;
+}
+
+const NAV_ITEMS: NavItem[] = [
+  { id: "home", label: "Home" },
+  { id: "about", label: "About" },
+  { id: "features", label: "Features" },
+  { id: "impact", label: "Impact" },
+  { id: "resources", label: "Resources" },
+  { id: "contact", label: "Contact" },
+];
+
 export default function LandingPage() {
+  const [activeSection, setActiveSection] = useState<string>("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Smooth scroll to section with fixed header offset compensation
+  const scrollToSection = (id: string) => {
+    setActiveSection(id);
+    setMobileMenuOpen(false);
+
+    if (id === "home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    const element = document.getElementById(id);
+    if (element) {
+      const headerOffset = 76;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  // Active section scroll spy listener
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 140;
+
+      // When near top, set to home
+      if (window.scrollY < 200) {
+        setActiveSection("home");
+        return;
+      }
+
+      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+        const item = NAV_ITEMS[i];
+        const section = document.getElementById(item.id);
+        if (section) {
+          const top = section.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSection(item.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-white text-[#101828] font-sans selection:bg-[#164E3A] selection:text-white flex flex-col relative overflow-x-hidden">
-      {/* 1. Header / Navigation Bar (Exact Replica from Image 2) */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#EAECF0] px-4 sm:px-8 lg:px-12 py-3.5 transition-all">
+      {/* 1. Fixed Header / Navigation Bar (Fixed top bar that stays visible during scroll) */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#EAECF0] px-4 sm:px-8 lg:px-12 py-3.5 transition-all shadow-xs">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           {/* Brand Logo */}
-          <Link href="/" className="flex items-center gap-3 group">
+          <button
+            onClick={() => scrollToSection("home")}
+            className="flex items-center gap-3 group text-left cursor-pointer focus:outline-hidden"
+          >
             <div className="h-10 w-10 rounded-xl bg-[#164E3A] flex items-center justify-center text-white shadow-xs group-hover:scale-105 transition-transform">
               <Shield className="h-5 w-5 fill-white/20 stroke-white stroke-[2]" />
             </div>
@@ -46,31 +115,27 @@ export default function LandingPage() {
                 Safer Communities. Stronger Tomorrow.
               </p>
             </div>
-          </Link>
+          </button>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Navigation Links with Dynamic Active Indicator */}
           <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-[#475467]">
-            <Link
-              href="#home"
-              className="text-[#164E3A] font-bold relative py-1 after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#164E3A]"
-            >
-              Home
-            </Link>
-            <Link href="#about" className="hover:text-[#164E3A] transition-colors py-1">
-              About
-            </Link>
-            <Link href="#features" className="hover:text-[#164E3A] transition-colors py-1">
-              Features
-            </Link>
-            <Link href="#impact" className="hover:text-[#164E3A] transition-colors py-1">
-              Impact
-            </Link>
-            <Link href="#resources" className="hover:text-[#164E3A] transition-colors py-1">
-              Resources
-            </Link>
-            <Link href="#contact" className="hover:text-[#164E3A] transition-colors py-1">
-              Contact
-            </Link>
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.id;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`relative py-1.5 text-xs font-semibold transition-all cursor-pointer focus:outline-hidden ${
+                    isActive
+                      ? "text-[#164E3A] font-bold after:content-[''] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2.5px] after:bg-[#164E3A] after:rounded-full"
+                      : "text-[#475467] hover:text-[#164E3A]"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
           </nav>
 
           {/* Right Action Button -> Login */}
@@ -87,7 +152,7 @@ export default function LandingPage() {
           {/* Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 rounded-lg text-[#344054] hover:bg-[#F4F6F8] transition-colors"
+            className="md:hidden p-2 rounded-lg text-[#344054] hover:bg-[#F4F6F8] transition-colors cursor-pointer"
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -95,49 +160,25 @@ export default function LandingPage() {
 
         {/* Mobile Navigation Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-3 pt-3 border-t border-[#EAECF0] space-y-2 pb-2">
-            <Link
-              href="#home"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-bold text-[#164E3A] bg-[#ECFDF3]"
-            >
-              Home
-            </Link>
-            <Link
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium text-[#475467] hover:bg-[#F9FAFB]"
-            >
-              About
-            </Link>
-            <Link
-              href="#features"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium text-[#475467] hover:bg-[#F9FAFB]"
-            >
-              Features
-            </Link>
-            <Link
-              href="#impact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium text-[#475467] hover:bg-[#F9FAFB]"
-            >
-              Impact
-            </Link>
-            <Link
-              href="#resources"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium text-[#475467] hover:bg-[#F9FAFB]"
-            >
-              Resources
-            </Link>
-            <Link
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2 rounded-lg text-sm font-medium text-[#475467] hover:bg-[#F9FAFB]"
-            >
-              Contact
-            </Link>
+          <div className="md:hidden mt-3 pt-3 border-t border-[#EAECF0] space-y-1 pb-2">
+            {NAV_ITEMS.map((item) => {
+              const isActive = activeSection === item.id;
+
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`w-full text-left px-3.5 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
+                    isActive
+                      ? "bg-[#ECFDF3] text-[#164E3A] font-bold"
+                      : "text-[#475467] hover:bg-[#F9FAFB]"
+                  }`}
+                >
+                  {item.label}
+                </button>
+              );
+            })}
+
             <div className="pt-2">
               <Link
                 href="/login"
@@ -152,8 +193,11 @@ export default function LandingPage() {
         )}
       </header>
 
+      {/* Spacer so content doesn't get hidden behind fixed header */}
+      <div className="h-[68px]" />
+
       {/* 2. Hero Section (Exact Replica from Image 2) */}
-      <section id="home" className="relative pt-8 sm:pt-14 pb-16 lg:pb-24 overflow-hidden border-b border-[#EAECF0]">
+      <section id="home" className="scroll-mt-24 relative pt-8 sm:pt-14 pb-16 lg:pb-24 overflow-hidden border-b border-[#EAECF0]">
         {/* Subtle Watercolor Mountain Wash in Background */}
         <div className="absolute inset-0 pointer-events-none opacity-40 z-0 flex items-end">
           <div className="relative w-full h-[360px]">
@@ -198,12 +242,12 @@ export default function LandingPage() {
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
-                <Link
-                  href="#features"
-                  className="inline-flex items-center gap-2 rounded-xl border border-[#D0D5DD] bg-white px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#344054] hover:bg-[#F9FAFB] transition-all shadow-2xs"
+                <button
+                  onClick={() => scrollToSection("features")}
+                  className="inline-flex items-center gap-2 rounded-xl border border-[#D0D5DD] bg-white px-6 py-3.5 text-xs sm:text-sm font-semibold text-[#344054] hover:bg-[#F9FAFB] transition-all shadow-2xs cursor-pointer"
                 >
                   <span>Learn More</span>
-                </Link>
+                </button>
               </div>
 
               {/* 3 Core Value Props Row */}
@@ -242,9 +286,9 @@ export default function LandingPage() {
             <div className="hidden sm:block w-32" />
 
             {/* Center Scroll to Explore */}
-            <a
-              href="#about"
-              className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-[#164E3A] transition-colors group cursor-pointer"
+            <button
+              onClick={() => scrollToSection("about")}
+              className="flex flex-col items-center gap-1.5 text-gray-400 hover:text-[#164E3A] transition-colors group cursor-pointer focus:outline-hidden"
             >
               <div className="w-5 h-8 rounded-full border-2 border-gray-300 flex items-start justify-center p-1 group-hover:border-[#164E3A] transition-colors">
                 <div className="w-1 h-2 rounded-full bg-gray-400 group-hover:bg-[#164E3A] animate-bounce transition-colors" />
@@ -252,7 +296,7 @@ export default function LandingPage() {
               <span className="text-[10px] font-bold uppercase tracking-widest text-[#98A2B3] group-hover:text-[#164E3A] transition-colors">
                 SCROLL TO EXPLORE
               </span>
-            </a>
+            </button>
 
             {/* Bottom Right Tagline */}
             <div className="text-xs text-[#98A2B3] font-medium tracking-wide text-center sm:text-right">
@@ -263,7 +307,7 @@ export default function LandingPage() {
       </section>
 
       {/* 3. About Section */}
-      <section id="about" className="py-16 sm:py-20 bg-[#F9FAFB] border-b border-[#EAECF0]">
+      <section id="about" className="scroll-mt-24 py-16 sm:py-20 bg-[#F9FAFB] border-b border-[#EAECF0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-[#164E3A]">
@@ -318,7 +362,7 @@ export default function LandingPage() {
       </section>
 
       {/* 4. Features Section */}
-      <section id="features" className="py-16 sm:py-20 bg-white border-b border-[#EAECF0]">
+      <section id="features" className="scroll-mt-24 py-16 sm:py-20 bg-white border-b border-[#EAECF0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
             <span className="text-xs font-bold uppercase tracking-widest text-[#164E3A]">
@@ -385,7 +429,7 @@ export default function LandingPage() {
       </section>
 
       {/* 5. Impact Metrics Section */}
-      <section id="impact" className="py-16 sm:py-20 bg-[#F4F6F8] border-b border-[#EAECF0]">
+      <section id="impact" className="scroll-mt-24 py-16 sm:py-20 bg-[#F4F6F8] border-b border-[#EAECF0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-[#164E3A]">
@@ -433,7 +477,7 @@ export default function LandingPage() {
       </section>
 
       {/* 6. Resources Section */}
-      <section id="resources" className="py-16 sm:py-20 bg-white border-b border-[#EAECF0]">
+      <section id="resources" className="scroll-mt-24 py-16 sm:py-20 bg-white border-b border-[#EAECF0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-[#164E3A]">
@@ -488,7 +532,7 @@ export default function LandingPage() {
       </section>
 
       {/* 7. Contact Section */}
-      <section id="contact" className="py-16 sm:py-20 bg-[#F9FAFB] border-b border-[#EAECF0]">
+      <section id="contact" className="scroll-mt-24 py-16 sm:py-20 bg-[#F9FAFB] border-b border-[#EAECF0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
             <span className="text-xs font-bold uppercase tracking-widest text-[#164E3A]">
