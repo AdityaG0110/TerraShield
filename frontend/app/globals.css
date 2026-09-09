@@ -5,14 +5,14 @@
 @import "leaflet/dist/leaflet.css";
 
 :root {
-  --background: #0B0F19;
-  --foreground: #F1F5F9;
+  --background: #F4F6F8;
+  --foreground: #101828;
 }
 
 body {
   color: var(--foreground);
   background-color: var(--background);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow-x: hidden;
 }
 
@@ -23,42 +23,42 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #F4F6F8;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1F293D;
+  background: #CBD5E1;
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #334155;
+  background: #94A3B8;
 }
 
-/* Leaflet Map overrides for sleek dark command center */
+/* Leaflet Map overrides for clean executive map */
 .leaflet-container {
-  background: #0B0F19 !important;
+  background: #F8FAFC !important;
   font-family: inherit;
 }
 
 .leaflet-popup-content-wrapper {
-  background: #111827 !important;
-  color: #F1F5F9 !important;
-  border: 1px solid #1F293D !important;
-  border-radius: 8px !important;
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+  background: #FFFFFF !important;
+  color: #101828 !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1) !important;
 }
 
 .leaflet-popup-tip {
-  background: #111827 !important;
+  background: #FFFFFF !important;
 }
 
 .leaflet-popup-content {
-  margin: 12px !important;
+  margin: 14px !important;
   line-height: 1.4 !important;
 }
 
-/* Pulse animation for high risk zones */
+/* Pulse animation for critical zones */
 @keyframes ringPulse {
   0% {
     transform: scale(0.95);
@@ -85,7 +85,7 @@ body {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: rgba(220, 38, 38, 0.5);
+  background: rgba(239, 68, 68, 0.4);
   animation: ringPulse 2s infinite ease-out;
   pointer-events: none;
 }

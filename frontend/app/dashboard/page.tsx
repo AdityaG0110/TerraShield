@@ -1,33 +1,33 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import {
-  Users,
-  Building2,
+  Home,
   AlertTriangle,
-  Flame,
-  RefreshCw,
+  Map as MapIcon,
+  Users,
   MapPin,
-  ExternalLink,
-  ShieldCheck,
-  Compass,
+  Trees,
+  ChevronDown,
 } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import Sidebar from "../../components/Sidebar";
 import RiskSummaryCard from "../../components/RiskSummaryCard";
 import RiskMap from "../../components/RiskMap";
-import PriorityQueueList from "../../components/PriorityQueueList";
+import RiskDistributionDonut from "../../components/RiskDistributionDonut";
+import RecentAlertsCard from "../../components/RecentAlertsCard";
+import TopRiskHabitationsTable from "../../components/TopRiskHabitationsTable";
+import LatestActivityCard from "../../components/LatestActivityCard";
 import { DashboardData, SettlementListItem } from "../../lib/types";
-import { fetchDashboard, fetchSettlements, recomputeAllRisks } from "../../lib/api";
+import { fetchDashboard, fetchSettlements } from "../../lib/api";
 
 export default function DashboardPage() {
   const [district, setDistrict] = useState("All Districts");
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [settlements, setSettlements] = useState<SettlementListItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [recomputing, setRecomputing] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [hazardFilter, setHazardFilter] = useState("All Hazards");
 
   const loadData = async (dist?: string) => {
     try {
@@ -49,205 +49,168 @@ export default function DashboardPage() {
     loadData(district);
   }, [district]);
 
-  const handleRecomputeAll = async () => {
-    try {
-      setRecomputing(true);
-      const res = await recomputeAllRisks();
-      setToastMessage(res.message || "All habitations re-scored with latest telemetry");
-      await loadData(district);
-      setTimeout(() => setToastMessage(null), 4000);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setRecomputing(false);
-    }
-  };
+  // Filter settlements based on search query if present
+  const displayedSettlements = settlements.filter((s) =>
+    searchQuery ? s.name.toLowerCase().includes(searchQuery.toLowerCase()) : true
+  );
+
+  const totalHabitations = dashboardData?.total_settlements || 100;
+  const highRiskCount = (dashboardData?.critical_zones || 8) + (dashboardData?.red_zones || 81);
+  const peopleAtRisk = dashboardData?.population_at_risk || 56139;
 
   return (
-    <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col">
-      <Navbar
-        selectedDistrict={district}
-        onDistrictChange={setDistrict}
-        districtsList={dashboardData ? dashboardData.district_summaries.map((d) => d.district) : undefined}
-      />
+    <div className="min-h-screen bg-[#F4F6F8] text-[#101828] flex">
+      {/* Figma Sidebar */}
+      <Sidebar />
 
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        {/* Figma Header / Navbar */}
+        <Navbar
+          selectedDistrict={district}
+          onDistrictChange={setDistrict}
+          districtsList={dashboardData ? dashboardData.district_summaries.map((d) => d.district) : undefined}
+          searchQuery={searchQuery}
+          onSearchChange={setSearchQuery}
+        />
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">
-          {/* Header & Recompute Bar */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <main className="flex-1 overflow-y-auto p-6 space-y-6">
+          {/* Welcome & Motivational Quote Header matching Figma */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
             <div>
-              <div className="flex items-center gap-2">
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
-                  Executive Command Dashboard
-                </h1>
-                <span className="rounded bg-blue-500/10 border border-blue-500/30 px-2 py-0.5 text-xs font-mono font-semibold text-cyan-300">
-                  {district}
-                </span>
-              </div>
-              <p className="text-xs text-slate-400 mt-1">
-                Real-time geospatial risk surveillance, population vulnerability, and relocation decision pipeline
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#101828]">
+                Welcome back, Ankit
+              </h1>
+              <p className="text-xs text-[#667085] mt-0.5">
+                Monitor risks, analyze insights and take action for safer communities.
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
-              <button
-                onClick={handleRecomputeAll}
-                disabled={recomputing}
-                className="flex items-center gap-2 rounded-xl border border-cyan-500/40 bg-cyan-950/30 px-4 py-2 text-xs font-bold text-cyan-300 shadow-md hover:bg-cyan-900/40 transition-all disabled:opacity-50"
-              >
-                <RefreshCw className={`h-3.5 w-3.5 ${recomputing ? "animate-spin" : ""}`} />
-                <span>{recomputing ? "Recomputing Telemetry..." : "Re-Score All Habitations"}</span>
-              </button>
-            </div>
+            <p className="text-xs italic text-[#667085] font-serif">
+              &ldquo;Preparedness Today. A Safer Tomorrow.&rdquo;
+            </p>
           </div>
 
-          {/* Toast Alert */}
-          {toastMessage && (
-            <div className="rounded-xl border border-emerald-500/40 bg-emerald-950/40 p-3 text-xs text-emerald-300 flex items-center gap-2 shadow-lg animate-in fade-in">
-              <ShieldCheck className="h-4 w-4 text-emerald-400" />
-              <span>{toastMessage}</span>
-            </div>
-          )}
-
-          {/* Top Row: 4 KPI Cards (PRD Frame 2) */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Row of 6 KPI Cards matching Figma */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
             <RiskSummaryCard
-              title="Population at Risk"
-              value={dashboardData ? dashboardData.population_at_risk : "--"}
-              subtitle="Citizens in Red & Critical Red Zones"
-              icon={Users}
-              variant="danger"
-              trend="+14% vs normal"
+              title="Habitations Assessed"
+              value={totalHabitations}
+              icon={Home}
+              trend="↑ +6%"
+              trendType="up-good"
+              iconBg="bg-[#ECFDF3]"
+              iconColor="text-[#164E3A]"
             />
             <RiskSummaryCard
-              title="Habitations Monitored"
-              value={dashboardData ? dashboardData.total_settlements : "--"}
-              subtitle="Geotagged settlements in jurisdiction"
-              icon={Building2}
-              variant="default"
-            />
-            <RiskSummaryCard
-              title="Red Zone Settlements"
-              value={dashboardData ? dashboardData.red_zones : "--"}
-              subtitle="High hazard index (50–74.9 pts)"
+              title="High Risk Habitations"
+              value={highRiskCount}
               icon={AlertTriangle}
-              variant="warning"
+              trend="↓ +12%"
+              trendType="down-bad"
+              iconBg="bg-[#FEF3F2]"
+              iconColor="text-[#EF4444]"
             />
             <RiskSummaryCard
-              title="Critical Red Zones"
-              value={dashboardData ? dashboardData.critical_zones : "--"}
-              subtitle="Immediate relocation mandatory (75+ pts)"
-              icon={Flame}
-              variant="danger"
+              title="Red Zone Area"
+              value="4,320 km²"
+              icon={MapIcon}
+              trend="↓ +8%"
+              trendType="down-bad"
+              iconBg="bg-[#EFF8FF]"
+              iconColor="text-[#3B82F6]"
+            />
+            <RiskSummaryCard
+              title="People at Risk"
+              value={peopleAtRisk}
+              icon={Users}
+              trend="↑ +14%"
+              trendType="up-good"
+              iconBg="bg-[#F9F5FF]"
+              iconColor="text-[#7C3AED]"
+            />
+            <RiskSummaryCard
+              title="Recommended Sites"
+              value={275}
+              icon={MapPin}
+              trend="↑ +5%"
+              trendType="up-good"
+              iconBg="bg-[#FEF2F2]"
+              iconColor="text-[#E11D48]"
+            />
+            <RiskSummaryCard
+              title="Available Capacity"
+              value="512,600"
+              icon={Trees}
+              trend="↑ +11%"
+              trendType="up-good"
+              iconBg="bg-[#F0FDF4]"
+              iconColor="text-[#16A34A]"
             />
           </div>
 
-          {/* Middle Row: GIS Map Preview & Priority Queue (PRD Frame 2: 8 cols + 4 cols) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            {/* GIS Map Preview (8 cols) */}
-            <div className="lg:col-span-8 rounded-xl border border-slate-800 bg-[#121927] p-5 flex flex-col justify-between">
+          {/* Middle Row: Risk Map (8 cols) + Risk Distribution & Alerts (4 cols) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left Box: Risk Map */}
+            <div className="lg:col-span-8 rounded-xl border border-[#EAECF0] bg-white p-5 shadow-xs">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="text-sm font-semibold text-white">
-                    GIS Risk Heatmap & Inundation Buffer Preview
-                  </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    Live geospatial clustering across {district}. Click pins for instant telemetry.
+                  <h3 className="text-sm font-bold text-[#101828]">Risk Map</h3>
+                  <p className="text-xs text-[#667085] mt-0.5">
+                    Multi-hazard view with vulnerable habitations and relocation sites
                   </p>
                 </div>
-                <Link
-                  href="/map"
-                  className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800 px-3 py-1.5 text-xs font-medium text-slate-200 hover:border-slate-500 hover:text-white transition-colors"
-                >
-                  <ExternalLink className="h-3.5 w-3.5 text-cyan-400" />
-                  <span>Full GIS Map</span>
-                </Link>
+
+                {/* Hazard Filter dropdown matching Figma */}
+                <div className="flex items-center gap-1.5 rounded-lg border border-[#D0D5DD] bg-white px-2.5 py-1 text-xs text-[#344054]">
+                  <select
+                    value={hazardFilter}
+                    onChange={(e) => setHazardFilter(e.target.value)}
+                    className="bg-transparent font-medium focus:outline-none cursor-pointer text-xs"
+                  >
+                    <option value="All Hazards">All Hazards</option>
+                    <option value="Landslide">Landslide Only</option>
+                    <option value="Flood">Flood Only</option>
+                    <option value="Cyclone">Cyclone Only</option>
+                  </select>
+                  <ChevronDown className="h-3.5 w-3.5 text-[#667085]" />
+                </div>
               </div>
 
-              <div className="flex-1 min-h-[420px]">
+              {/* Map Canvas */}
+              <div className="h-[430px] w-full overflow-hidden rounded-xl">
                 <RiskMap
-                  settlements={settlements}
-                  height="420px"
-                  initialCenter={[27.50, 81.80]}
-                  initialZoom={9}
+                  settlements={displayedSettlements}
+                  height="430px"
                   interactiveSideDrawer={true}
                 />
               </div>
             </div>
 
-            {/* Relocation Priority Queue (4 cols) */}
-            <div className="lg:col-span-4 flex flex-col">
-              <PriorityQueueList
-                items={dashboardData ? dashboardData.relocation_priority_queue : []}
+            {/* Right Box: Risk Distribution Donut & Recent Alerts */}
+            <div className="lg:col-span-4 space-y-6">
+              <RiskDistributionDonut
+                totalCount={totalHabitations}
+                distribution={dashboardData?.risk_category_distribution ? {
+                  critical: dashboardData.risk_category_distribution.critical || 8,
+                  red_zone: dashboardData.risk_category_distribution.red_zone || 81,
+                  watch: dashboardData.risk_category_distribution.watch || 11,
+                  safe: dashboardData.risk_category_distribution.safe || 0,
+                } : undefined}
               />
+
+              <RecentAlertsCard />
             </div>
           </div>
 
-          {/* Bottom Row: District Vulnerability Comparison Cards */}
-          {dashboardData && dashboardData.district_summaries.length > 0 && (
-            <div className="rounded-xl border border-slate-800 bg-[#121927] p-5">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-sm font-semibold text-white">
-                    Cross-District Vulnerability Breakdown
-                  </h3>
-                  <p className="text-xs text-slate-400 mt-0.5">
-                    District-level hazard exposure aggregates and population requiring evacuation support
-                  </p>
-                </div>
-                <Link
-                  href="/analytics"
-                  className="text-xs font-semibold text-cyan-400 hover:underline"
-                >
-                  View Full Analytics & Trends &rarr;
-                </Link>
-              </div>
+          {/* Bottom Row: Top 5 High-Risk Habitations & Latest Activity matching Figma */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <TopRiskHabitationsTable
+              items={dashboardData?.relocation_priority_queue || []}
+            />
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {dashboardData.district_summaries.map((ds) => (
-                  <div
-                    key={ds.district}
-                    onClick={() => setDistrict(ds.district)}
-                    className={`cursor-pointer rounded-xl border p-4 transition-all ${
-                      district === ds.district
-                        ? "border-cyan-500 bg-cyan-950/20"
-                        : "border-slate-800 bg-slate-900/60 hover:border-slate-700"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-white text-sm">{ds.district}</span>
-                      <span className="text-xs font-mono font-bold text-cyan-400">
-                        Avg: {ds.average_risk_score}/100
-                      </span>
-                    </div>
-
-                    <div className="mt-3 grid grid-cols-3 gap-2 text-center text-xs">
-                      <div className="p-2 rounded bg-slate-800/60">
-                        <span className="text-[10px] text-slate-400 block">Critical</span>
-                        <span className="text-red-400 font-bold font-mono text-sm">
-                          {ds.critical_zones}
-                        </span>
-                      </div>
-                      <div className="p-2 rounded bg-slate-800/60">
-                        <span className="text-[10px] text-slate-400 block">Red Zones</span>
-                        <span className="text-orange-400 font-bold font-mono text-sm">
-                          {ds.red_zones}
-                        </span>
-                      </div>
-                      <div className="p-2 rounded bg-slate-800/60">
-                        <span className="text-[10px] text-slate-400 block">At Risk Pop.</span>
-                        <span className="text-white font-bold font-mono text-sm">
-                          {ds.population_at_risk.toLocaleString()}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+            <LatestActivityCard />
+          </div>
         </main>
       </div>
     </div>

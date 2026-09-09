@@ -5,82 +5,106 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  MapPin,
-  Building2,
-  Compass,
-  BarChart3,
+  Map,
+  CircleDot,
   Home,
-  AlertOctagon,
-  LogOut,
+  MapPin,
+  Scale,
+  Sparkles,
+  Bell,
+  FileText,
+  Truck,
+  Database,
+  Settings,
+  Shield,
+  Leaf,
 } from "lucide-react";
 
 export default function Sidebar() {
   const pathname = usePathname();
 
   const navItems = [
-    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-    { label: "GIS Risk Map", href: "/map", icon: MapPin },
-    { label: "Settlements", href: "/settlements", icon: Building2 },
-    { label: "Relocation Engine", href: "/relocation/all", icon: Compass },
-    { label: "Analytics & Trends", href: "/analytics", icon: BarChart3 },
-    { label: "Public Overview", href: "/", icon: Home },
+    { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, exact: true },
+    { label: "Hazard Map", href: "/map", icon: Map },
+    { label: "Red Zones", href: "/settlements?risk_category=critical", icon: CircleDot, iconColor: "text-red-500" },
+    { label: "Vulnerable Habitations", href: "/settlements", icon: Home, iconColor: "text-orange-500" },
+    { label: "Relocation Sites", href: "/settlements", icon: MapPin, iconColor: "text-red-400" },
+    { label: "Carrying Capacity", href: "/dashboard", icon: Scale, iconColor: "text-amber-500" },
+    { label: "AI Insights", href: "/analytics", icon: Sparkles, iconColor: "text-purple-500" },
+    { label: "Alerts", href: "/dashboard", icon: Bell, iconColor: "text-amber-500", badge: 3 },
+    { label: "Reports", href: "/analytics", icon: FileText, iconColor: "text-blue-500" },
+    { label: "Field Operations", href: "/settlements", icon: Truck, iconColor: "text-emerald-500" },
+    { label: "Data Sources", href: "/analytics", icon: Database, iconColor: "text-indigo-500" },
+    { label: "Settings", href: "/login", icon: Settings, iconColor: "text-slate-400" },
   ];
 
   return (
-    <aside className="w-16 md:w-64 shrink-0 border-r border-slate-800 bg-[#0E1424] flex flex-col justify-between py-5 select-none transition-all">
-      <div className="space-y-6 px-3">
-        <div className="px-3 hidden md:block">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-            Decision Command
-          </p>
+    <aside className="w-64 shrink-0 bg-white border-r border-[#EAECF0] flex flex-col justify-between select-none min-h-screen">
+      <div>
+        {/* Brand Logo & Tagline */}
+        <div className="p-5 border-b border-[#F2F4F7]">
+          <Link href="/dashboard" className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#164E3A] text-white shadow-sm">
+              <Leaf className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1">
+                <span className="text-base font-extrabold tracking-tight text-[#164E3A] font-sans">
+                  Terra<span className="text-[#0E3326]">SHIELD</span>
+                </span>
+              </div>
+              <p className="text-[11px] text-[#667085] font-medium -mt-0.5">
+                Safer Communities.
+              </p>
+            </div>
+          </Link>
         </div>
 
-        <nav className="space-y-1.5">
+        {/* Navigation Items */}
+        <nav className="p-3 space-y-1">
           {navItems.map((item) => {
             const Icon = item.icon;
-            const isActive =
-              item.href === "/"
-                ? pathname === "/"
-                : pathname.startsWith(item.href) ||
-                  (item.label === "Relocation Engine" && pathname.startsWith("/relocation"));
+            const isActive = item.exact
+              ? pathname === item.href
+              : pathname.startsWith(item.href) && item.href !== "/dashboard";
 
             return (
               <Link
                 key={item.label}
-                href={item.href === "/relocation/all" ? "/settlements" : item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-xs font-medium transition-all ${
+                href={item.href}
+                className={`flex items-center justify-between rounded-xl px-3.5 py-2.5 text-xs font-semibold transition-all ${
                   isActive
-                    ? "bg-blue-600/20 text-cyan-300 border border-blue-500/30 shadow-md shadow-blue-500/10"
-                    : "text-slate-400 hover:bg-slate-800/60 hover:text-slate-200"
+                    ? "bg-[#164E3A] text-white shadow-sm"
+                    : "text-[#344054] hover:bg-[#F9FAFB] hover:text-[#101828]"
                 }`}
               >
-                <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-cyan-400" : "text-slate-400"}`} />
-                <span className="hidden md:inline">{item.label}</span>
+                <div className="flex items-center gap-3">
+                  <Icon
+                    className={`h-4 w-4 shrink-0 ${
+                      isActive ? "text-white" : item.iconColor || "text-[#667085]"
+                    }`}
+                  />
+                  <span>{item.label}</span>
+                </div>
+
+                {item.badge && (
+                  <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-[#EF4444] px-1 text-[10px] font-bold text-white">
+                    {item.badge}
+                  </span>
+                )}
               </Link>
             );
           })}
         </nav>
       </div>
 
-      <div className="px-3 space-y-3">
-        {/* Emergency Alert Hotline widget */}
-        <div className="hidden md:block rounded-xl border border-red-900/30 bg-red-950/20 p-3">
-          <div className="flex items-center gap-2 text-red-400 text-xs font-semibold">
-            <AlertOctagon className="h-4 w-4 animate-pulse text-red-400" />
-            <span>SDMA Emergency Hotline</span>
-          </div>
-          <p className="text-[11px] text-slate-400 mt-1">
-            Bahraich Flood Control: 1077 / 05252-232145
-          </p>
+      {/* Bottom Navy Banner matching Figma */}
+      <div className="p-3">
+        <div className="rounded-xl bg-[#0B192C] p-4 text-white shadow-sm">
+          <p className="text-xs font-bold leading-tight">Prepared People</p>
+          <p className="text-xs font-bold text-slate-200 leading-tight">Safer Tomorrow</p>
+          <p className="text-[10px] text-slate-400 font-mono mt-1.5">TerraSHIELD v2.1</p>
         </div>
-
-        <Link
-          href="/login"
-          className="flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-800/60 hover:text-red-400 transition-colors"
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          <span className="hidden md:inline">Switch / Logout</span>
-        </Link>
       </div>
     </aside>
   );

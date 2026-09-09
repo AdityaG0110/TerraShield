@@ -6,24 +6,26 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
-  darkMode: "class",
   theme: {
     extend: {
       colors: {
-        background: "#0B0F19",
-        surface: "#111827",
-        "surface-card": "#161F30",
-        "surface-border": "#1F293D",
-        "surface-hover": "#1E293B",
+        background: "#F4F6F8",
+        surface: "#FFFFFF",
+        "surface-border": "#EAECF0",
+        "primary-green": {
+          DEFAULT: "#164E3A",
+          hover: "#123F2F",
+          light: "#E8F5E9",
+        },
         risk: {
-          safe: "#22C55E",
-          watch: "#EAB308",
-          red: "#F97316",
-          critical: "#DC2626",
+          critical: "#EF4444",
+          high: "#F97316",
+          moderate: "#FBBF24",
+          low: "#22C55E",
         },
       },
-      animation: {
-        "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      fontFamily: {
+        sans: ["Inter", "system-ui", "sans-serif"],
       },
     },
   },
