@@ -21,6 +21,21 @@ from app.services.risk_scoring_service import calculate_risk_score
 router = APIRouter(prefix="/settlements", tags=["Settlements"])
 
 
+@router.post("/import-csv")
+def trigger_csv_import(db: Session = Depends(get_db)):
+    """Triggers import of villages.csv and updates all settlements and recommendations."""
+    from app.services.csv_import_service import import_villages_from_csv
+    result = import_villages_from_csv(db)
+    return result
+
+
+@router.get("/districts")
+def list_districts(db: Session = Depends(get_db)):
+    """Returns a list of all distinct districts in the database."""
+    districts = db.query(Settlement.district).distinct().order_by(Settlement.district).all()
+    return [d[0] for d in districts if d[0]]
+
+
 @router.get("", response_model=SettlementListResponse)
 def list_settlements(
     district: Optional[str] = Query(None, description="Filter by district name"),

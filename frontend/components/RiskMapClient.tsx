@@ -69,14 +69,26 @@ function MapViewController({ center, zoom }: { center: [number, number]; zoom: n
 export default function RiskMapClient({
   settlements,
   height = "600px",
-  initialCenter = [27.50, 81.80],
-  initialZoom = 9,
+  initialCenter = [26.0, 93.5],
+  initialZoom = 7,
   highlightSettlementId,
   interactiveSideDrawer = true,
 }: Props) {
   const [selectedSettlement, setSelectedSettlement] = useState<SettlementListItem | null>(null);
   const [activeLayer, setActiveLayer] = useState<"all" | "critical" | "high_risk" | "safe">("all");
   const [showInundationBuffers, setShowInundationBuffers] = useState(true);
+
+  // Compute center dynamically from settlements
+  const computedCenter: [number, number] = React.useMemo(() => {
+    if (settlements.length > 0) {
+      const avgLat = settlements.reduce((sum, s) => sum + s.latitude, 0) / settlements.length;
+      const avgLon = settlements.reduce((sum, s) => sum + s.longitude, 0) / settlements.length;
+      return [avgLat, avgLon];
+    }
+    return initialCenter;
+  }, [settlements, initialCenter]);
+
+  const computedZoom = settlements.length > 20 ? 7 : initialZoom;
 
   // Set initial selected if specified
   useEffect(() => {
@@ -260,12 +272,12 @@ export default function RiskMapClient({
 
       {/* Leaflet Map Element */}
       <MapContainer
-        center={initialCenter}
-        zoom={initialZoom}
+        center={computedCenter}
+        zoom={computedZoom}
         style={{ height: "100%", width: "100%" }}
         zoomControl={false}
       >
-        <MapViewController center={initialCenter} zoom={initialZoom} />
+        <MapViewController center={computedCenter} zoom={computedZoom} />
 
         {/* CartoDB Dark Matter High-Tech Command Map Tiles */}
         <TileLayer

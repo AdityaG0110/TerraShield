@@ -9,12 +9,30 @@ import RoleSelector from "./RoleSelector";
 interface Props {
   selectedDistrict?: string;
   onDistrictChange?: (district: string) => void;
+  districtsList?: string[];
 }
 
-export default function Navbar({ selectedDistrict = "All Districts", onDistrictChange }: Props) {
+export default function Navbar({
+  selectedDistrict = "All Districts",
+  onDistrictChange,
+  districtsList,
+}: Props) {
   const pathname = usePathname();
 
-  const districts = ["All Districts", "Bahraich", "Gonda", "Shravasti"];
+  const defaultDistricts = [
+    "All Districts",
+    "Arunachal Pradesh",
+    "Assam",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Tripura",
+  ];
+
+  const districts = districtsList && districtsList.length > 0
+    ? (districtsList.includes("All Districts") ? districtsList : ["All Districts", ...districtsList])
+    : defaultDistricts;
 
   return (
     <header className="sticky top-0 z-30 flex h-16 w-full items-center justify-between border-b border-slate-800 bg-[#0B0F19]/90 px-4 md:px-8 backdrop-blur-md">

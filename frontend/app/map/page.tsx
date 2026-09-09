@@ -27,9 +27,21 @@ export default function MapPage() {
     load();
   }, [district]);
 
+  const uniqueDistricts = React.useMemo(() => {
+    const set = new Set<string>();
+    settlements.forEach((s) => {
+      if (s.district) set.add(s.district);
+    });
+    return Array.from(set).sort();
+  }, [settlements]);
+
   return (
     <div className="h-screen bg-[#0B0F19] text-white flex flex-col overflow-hidden">
-      <Navbar selectedDistrict={district} onDistrictChange={setDistrict} />
+      <Navbar
+        selectedDistrict={district}
+        onDistrictChange={setDistrict}
+        districtsList={uniqueDistricts}
+      />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />

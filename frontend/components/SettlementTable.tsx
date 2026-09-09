@@ -65,6 +65,14 @@ export default function SettlementTable({ initialSettlements, onRefreshNeeded }:
     }
   };
 
+  const uniqueDistricts = React.useMemo(() => {
+    const set = new Set<string>();
+    settlements.forEach((s) => {
+      if (s.district) set.add(s.district);
+    });
+    return Array.from(set).sort();
+  }, [settlements]);
+
   return (
     <div className="w-full space-y-4">
       {/* Controls Bar */}
@@ -88,9 +96,11 @@ export default function SettlementTable({ initialSettlements, onRefreshNeeded }:
             className="rounded-lg border border-slate-700 bg-slate-900 px-3 py-2 text-xs text-slate-200 focus:border-cyan-500 focus:outline-none"
           >
             <option value="All">All Districts</option>
-            <option value="Bahraich">Bahraich</option>
-            <option value="Gonda">Gonda</option>
-            <option value="Shravasti">Shravasti</option>
+            {uniqueDistricts.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
           </select>
 
           {/* Risk category filter */}

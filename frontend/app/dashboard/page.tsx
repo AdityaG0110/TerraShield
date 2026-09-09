@@ -65,7 +65,11 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#0B0F19] text-white flex flex-col">
-      <Navbar selectedDistrict={district} onDistrictChange={setDistrict} />
+      <Navbar
+        selectedDistrict={district}
+        onDistrictChange={setDistrict}
+        districtsList={dashboardData ? dashboardData.district_summaries.map((d) => d.district) : undefined}
+      />
 
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
