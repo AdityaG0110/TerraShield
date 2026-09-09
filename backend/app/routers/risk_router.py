@@ -44,7 +44,11 @@ def get_risk_assessment(settlement_id: str, db: Session = Depends(get_db)):
         population=settlement.population
     )
 
-    breakdown = [FactorContribution(**f) for f in latest_risk.factor_breakdown]
+    raw_breakdown = latest_risk.factor_breakdown or []
+    breakdown = [
+        FactorContribution.model_validate(f)
+        for f in (raw_breakdown if isinstance(raw_breakdown, list) else [])
+    ]
 
     return RiskAssessmentResponse(
         id=latest_risk.id,
@@ -103,7 +107,7 @@ def recompute_settlement_risk(settlement_id: str, db: Session = Depends(get_db))
         population=settlement.population
     )
 
-    breakdown_models = [FactorContribution(**f) for f in breakdown]
+    breakdown_models = [FactorContribution.model_validate(f) for f in breakdown]
 
     assessment_resp = RiskAssessmentResponse(
         id=new_assessment.id,

@@ -2,7 +2,8 @@
   "venvPath": ".",
   "venv": ".venv",
   "extraPaths": [
-    "backend"
+    "backend",
+    "C:/Users/gabaa/AppData/Local/Programs/Python/Python314/Lib/site-packages"
   ],
   "include": [
     "backend"
