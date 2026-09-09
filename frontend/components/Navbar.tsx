@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Search, MapPin, Bell, ChevronDown, Menu } from "lucide-react";
 import RoleSelector from "./RoleSelector";
 import { useSidebar } from "./SidebarContext";
+import { useAuth } from "./AuthContext";
 
 interface Props {
   selectedDistrict?: string;
@@ -22,24 +23,13 @@ export default function Navbar({
 }: Props) {
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
-  const [userProfile, setUserProfile] = useState({
-    name: "Ankit Sharma",
-    role: "State Administrator",
-  });
+  const { user } = useAuth();
   const { toggle } = useSidebar();
 
   useEffect(() => {
     const now = new Date();
     setCurrentDate(now.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" }));
     setCurrentTime(now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
-
-    const saved = localStorage.getItem("terrashield_user");
-    if (saved) {
-      try {
-        const u = JSON.parse(saved);
-        if (u.name) setUserProfile({ name: u.name, role: u.role_label || "State Administrator" });
-      } catch (e) {}
-    }
   }, []);
 
   const defaultDistricts = [
@@ -115,14 +105,14 @@ export default function Navbar({
         {/* User Avatar & Name */}
         <div className="flex items-center gap-2.5 sm:border-l sm:border-[#EAECF0] sm:pl-3">
           <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#164E3A] text-xs font-bold text-white shadow-xs shrink-0">
-            {userProfile.name.charAt(0)}
+            {user.initial || user.name.charAt(0)}
           </div>
           <div className="text-left hidden md:block">
             <p className="text-xs font-bold text-[#101828] leading-tight">
-              {userProfile.name}
+              {user.name}
             </p>
             <p className="text-[11px] text-[#667085] font-medium leading-tight">
-              {userProfile.role}
+              {user.role_label}
             </p>
           </div>
         </div>

@@ -53,43 +53,29 @@ def import_villages_from_csv(db: Session, csv_path: Optional[str] = None) -> Dic
     if existing_users == 0:
         users = [
             User(
-                name="Rajeshwar Verma, IAS",
-                email="dm@bahraich.gov.in",
-                password_hash="hashed_pw",
-                role="dm",
-                jurisdiction_district="Assam",
-                jurisdiction_state="Assam"
-            ),
-            User(
-                name="Dr. Ananya Sharma",
-                email="dmo@gonda.gov.in",
-                password_hash="hashed_pw",
-                role="dmo",
-                jurisdiction_district="Meghalaya",
-                jurisdiction_state="Meghalaya"
-            ),
-            User(
-                name="Vikramaditya Rao",
-                email="state@disaster.up.gov.in",
-                role="state_authority",
-                jurisdiction_district=None,
-                jurisdiction_state="Northeast Region"
-            ),
-            User(
-                name="Commander S. K. Nair",
-                email="relief@ndrf.gov.in",
-                role="relief_team",
-                jurisdiction_district=None,
-                jurisdiction_state="Field Operations"
-            ),
-            User(
-                name="System Administrator",
+                name="Ankit Sharma",
                 email="admin@terrashield.gov.in",
                 password_hash="hashed_pw",
-                role="admin",
+                role="state_authority",
                 jurisdiction_district=None,
-                jurisdiction_state="National"
-            )
+                jurisdiction_state="National / Northeast"
+            ),
+            User(
+                name="R. Mehta",
+                email="officer@chamoli.gov.in",
+                password_hash="hashed_pw",
+                role="dm",
+                jurisdiction_district="Chamoli",
+                jurisdiction_state="Uttarakhand"
+            ),
+            User(
+                name="P. Singh",
+                email="analyst@ndma.gov.in",
+                password_hash="hashed_pw",
+                role="dmo",
+                jurisdiction_district=None,
+                jurisdiction_state="NDMA Command"
+            ),
         ]
         db.add_all(users)
         db.commit()

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SidebarProvider } from "../components/SidebarContext";
+import { AuthProvider } from "../components/AuthContext";
 
 export const metadata: Metadata = {
   title: "TerraShield — AI Hazard Risk Intelligence & Relocation Decision Support",
@@ -15,9 +16,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen bg-[#F4F6F8] text-[#101828] font-sans antialiased selection:bg-[#164E3A] selection:text-white">
-        <SidebarProvider>
-          {children}
-        </SidebarProvider>
+        <AuthProvider>
+          <SidebarProvider>
+            {children}
+          </SidebarProvider>
+        </AuthProvider>
       </body>
     </html>
   );

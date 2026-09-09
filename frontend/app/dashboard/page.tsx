@@ -20,8 +20,10 @@ import TopRiskHabitationsTable from "../../components/TopRiskHabitationsTable";
 import LatestActivityCard from "../../components/LatestActivityCard";
 import { DashboardData, SettlementListItem } from "../../lib/types";
 import { fetchDashboard, fetchSettlements } from "../../lib/api";
+import { useAuth } from "../../components/AuthContext";
 
 export default function DashboardPage() {
+  const { welcomeName } = useAuth();
   const [district, setDistrict] = useState("All Districts");
   const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const [settlements, setSettlements] = useState<SettlementListItem[]>([]);
@@ -79,7 +81,7 @@ export default function DashboardPage() {
           <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#101828]">
-                Welcome back, Ankit
+                Welcome back, {welcomeName}
               </h1>
               <p className="text-xs text-[#667085] mt-0.5">
                 Monitor risks, analyze insights and take action for safer communities.

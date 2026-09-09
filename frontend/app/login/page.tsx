@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Globe, Eye, EyeOff, Check, ArrowRight, ChevronDown, ChevronUp, ShieldCheck } from "lucide-react";
+import { useAuth } from "../../components/AuthContext";
 
 interface DemoAccount {
   id: string;
@@ -36,7 +37,7 @@ const DEMO_ACCOUNTS: DemoAccount[] = [
     email: "officer@chamoli.gov.in",
     passwordDisplay: "Chamoli@123",
     role: "dm",
-    district: "Chamoli District",
+    district: "Chamoli",
   },
   {
     id: "singh",
@@ -52,6 +53,7 @@ const DEMO_ACCOUNTS: DemoAccount[] = [
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [selectedAccountId, setSelectedAccountId] = useState<string>("ankit");
   const [email, setEmail] = useState<string>("admin@terrashield.gov.in");
   const [password, setPassword] = useState<string>("Terra@2025");
@@ -69,22 +71,18 @@ export default function LoginPage() {
     setIsSubmitting(true);
     const targetAccount = acc || DEMO_ACCOUNTS.find((a) => a.id === selectedAccountId) || DEMO_ACCOUNTS[0];
 
-    localStorage.setItem(
-      "terrashield_user",
-      JSON.stringify({
-        id: targetAccount.id,
-        name: targetAccount.name,
-        email: email || targetAccount.email,
-        role: targetAccount.role,
-        role_label: targetAccount.roleTitle,
-        jurisdiction_district: targetAccount.district,
-      })
-    );
-    window.dispatchEvent(new Event("storage"));
+    login({
+      id: targetAccount.id,
+      name: targetAccount.name,
+      email: email || targetAccount.email,
+      role: targetAccount.role,
+      role_label: targetAccount.roleTitle,
+      district: targetAccount.district,
+    });
 
     setTimeout(() => {
       router.push("/dashboard");
-    }, 400);
+    }, 300);
   };
 
   return (
