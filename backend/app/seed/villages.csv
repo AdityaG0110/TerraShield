@@ -1,0 +1,101 @@
+Village_Name,District,State,Latitude,Longitude,Rainfall_mm,Population,Population_Density,Elevation_m,Slope_Degree,Historical_Hazard_Count,Risk_Score,Risk_Category,Relocation_Priority
+Dhemaji,Assam,Assam,27.48,94.72,1828,1084,269.4,323,8.6,40,50.0,Yellow,Low
+Jonai,Assam,Assam,27.82,95.16,1507,2005,477.8,321,14.2,40,53.2,Yellow,Low
+Sissiborgaon,Assam,Assam,27.63,94.76,1927,1292,1247.3,114,10.7,40,59.5,Yellow,Low
+Gogamukh,Assam,Assam,27.45,94.53,1639,321,155.5,302,19.6,40,56.2,Yellow,Low
+Gerukamukh,Assam,Assam,27.57,94.77,1803,726,252.0,5,7.6,40,51.4,Yellow,Low
+Majuli,Assam,Assam,27.0,94.22,2317,1062,236.8,5,6.2,40,52.6,Yellow,Low
+Kamalabari,Assam,Assam,26.95,94.18,1756,431,121.3,5,8.6,40,52.9,Yellow,Low
+Lakhimpur,Assam,Assam,27.23,94.1,2105,1142,370.8,7,0.5,40,52.2,Yellow,Low
+Dhakuakhana,Assam,Assam,27.18,94.75,2170,1190,475.5,5,0.5,40,51.4,Yellow,Low
+Narayanpur,Assam,Assam,27.03,93.93,1872,492,205.1,5,6.8,40,52.0,Yellow,Low
+Biswanath,Assam,Assam,26.73,93.15,1471,498,183.1,258,0.5,40,44.2,Yellow,Low
+Gohpur,Assam,Assam,26.88,93.62,1766,1267,402.1,5,7.6,40,51.5,Yellow,Low
+Sootea,Assam,Assam,26.67,93.17,1583,397,101.9,5,16.8,40,53.2,Yellow,Low
+Behali,Assam,Assam,26.94,93.59,2305,617,186.0,23,7.3,40,53.4,Yellow,Low
+Dibrugarh,Assam,Assam,27.47,94.91,2079,532,229.1,5,12.2,40,56.3,Yellow,Low
+Naharkatia,Assam,Assam,27.29,95.34,1922,223,198.2,119,0.5,40,48.5,Yellow,Low
+Tingrai,Assam,Assam,27.42,95.36,1600,1026,378.0,5,0.5,40,45.6,Yellow,Low
+Tinsukia,Assam,Assam,27.49,95.36,2008,672,376.4,5,0.5,40,50.5,Yellow,Low
+Doomdooma,Assam,Assam,27.57,95.57,1791,735,153.2,170,0.5,40,49.3,Yellow,Low
+Sadiya,Assam,Assam,27.83,95.67,1675,164,54.1,5,0.5,40,46.3,Yellow,Low
+Pasighat,Arunachal Pradesh,Arunachal Pradesh,28.07,95.33,2280,391,198.2,5,27.2,40,63.8,Orange,Medium
+Mebo,Arunachal Pradesh,Arunachal Pradesh,28.0,95.24,2343,526,115.5,5,48.0,40,71.6,Orange,Medium
+Dambuk,Arunachal Pradesh,Arunachal Pradesh,28.29,95.57,1986,145,82.6,298,40.0,40,67.6,Orange,Medium
+Roing,Arunachal Pradesh,Arunachal Pradesh,28.15,95.84,2603,465,98.1,5,32.1,40,66.5,Orange,Medium
+Tezu,Arunachal Pradesh,Arunachal Pradesh,27.91,96.13,2336,619,241.0,43,38.7,40,70.1,Orange,Medium
+Namsai,Arunachal Pradesh,Arunachal Pradesh,27.67,95.86,2847,544,341.5,259,40.3,40,75.0,Orange,Medium
+Changlang,Arunachal Pradesh,Arunachal Pradesh,27.12,96.73,2732,247,91.5,518,39.4,40,69.6,Orange,Medium
+Khonsa,Arunachal Pradesh,Arunachal Pradesh,27.02,95.56,1274,271,199.7,5,19.5,40,50.2,Yellow,Low
+Anini,Arunachal Pradesh,Arunachal Pradesh,28.8,94.97,2126,467,118.9,5,48.0,40,70.1,Orange,Medium
+Tawang,Arunachal Pradesh,Arunachal Pradesh,27.59,91.86,2015,207,108.5,103,22.7,40,60.3,Orange,Medium
+Bomdila,Arunachal Pradesh,Arunachal Pradesh,27.26,92.4,2413,188,40.3,72,37.0,40,69.8,Orange,Medium
+Aalo,Arunachal Pradesh,Arunachal Pradesh,28.17,94.8,2241,100,46.0,319,39.2,40,67.4,Orange,Medium
+Yingkiong,Arunachal Pradesh,Arunachal Pradesh,28.62,94.73,2543,311,79.3,5,38.0,40,68.7,Orange,Medium
+Daporijo,Arunachal Pradesh,Arunachal Pradesh,27.99,94.22,2734,496,203.8,927,46.8,40,71.4,Orange,Medium
+Ziro,Arunachal Pradesh,Arunachal Pradesh,27.54,93.83,2446,236,108.6,490,34.5,40,64.9,Orange,Medium
+Itanagar,Arunachal Pradesh,Arunachal Pradesh,27.08,93.61,2530,318,405.1,5,41.8,40,76.1,Orange,Medium
+Naharlagun,Arunachal Pradesh,Arunachal Pradesh,27.1,93.7,2207,88,70.0,5,25.8,40,62.9,Orange,Medium
+Seppa,Arunachal Pradesh,Arunachal Pradesh,27.37,93.05,2530,261,70.2,304,40.5,40,64.6,Orange,Medium
+Hayuliang,Arunachal Pradesh,Arunachal Pradesh,28.08,96.46,2413,219,90.5,590,45.7,40,67.6,Orange,Medium
+Aizawl,Mizoram,Mizoram,23.73,92.72,2599,516,118.0,249,47.3,40,74.0,Orange,Medium
+Lunglei,Mizoram,Mizoram,22.89,92.75,2890,317,68.5,212,32.3,40,69.4,Orange,Medium
+Champhai,Mizoram,Mizoram,23.47,93.32,2083,268,100.6,369,48.0,40,67.7,Orange,Medium
+Kolasib,Mizoram,Mizoram,24.22,92.68,2771,320,195.0,430,38.6,40,68.7,Orange,Medium
+Serchhip,Mizoram,Mizoram,23.31,92.85,2574,166,128.2,431,48.0,40,68.7,Orange,Medium
+Saiha,Mizoram,Mizoram,22.49,92.98,2504,124,49.2,185,42.0,40,72.8,Orange,Medium
+Lawngtlai,Mizoram,Mizoram,22.53,92.89,2701,276,61.3,427,40.6,40,66.8,Orange,Medium
+Mamit,Mizoram,Mizoram,23.93,92.49,1957,429,150.4,300,34.6,40,61.2,Orange,Medium
+Khawzawl,Mizoram,Mizoram,23.52,93.18,3110,715,345.6,439,48.0,40,77.5,Orange,Medium
+Hnahthial,Mizoram,Mizoram,22.98,92.93,2848,399,93.3,152,46.3,40,76.0,Orange,Medium
+Thenzawl,Mizoram,Mizoram,23.32,92.75,3218,258,195.6,142,37.8,40,76.9,Orange,Medium
+Churachandpur,Manipur,Manipur,24.33,93.68,1601,546,777.5,122,32.1,40,63.1,Orange,Medium
+Ukhrul,Manipur,Manipur,25.1,94.36,1626,1192,270.8,282,25.8,40,56.4,Yellow,Low
+Senapati,Manipur,Manipur,25.27,94.26,1513,962,532.4,270,39.6,40,63.9,Orange,Medium
+Tamenglong,Manipur,Manipur,24.99,93.53,2167,125,31.8,5,23.1,40,60.9,Orange,Medium
+Jiribam,Manipur,Manipur,24.8,93.12,1595,788,158.9,485,29.7,40,58.0,Yellow,Low
+Imphal,Manipur,Manipur,24.82,93.94,1730,450,294.7,565,5.9,40,46.7,Yellow,Low
+Kakching,Manipur,Manipur,24.5,93.98,1630,196,46.0,122,20.3,40,53.3,Yellow,Low
+Moreh,Manipur,Manipur,24.25,94.31,1387,157,39.7,278,19.0,40,49.2,Yellow,Low
+Noney,Manipur,Manipur,24.72,93.68,1740,550,176.0,375,16.1,40,52.4,Yellow,Low
+Bishnupur,Manipur,Manipur,24.63,93.77,1325,378,83.5,365,33.5,40,58.5,Yellow,Low
+Kohima,Nagaland,Nagaland,25.67,94.11,1821,574,372.6,598,47.6,40,63.7,Orange,Medium
+Dimapur,Nagaland,Nagaland,25.91,93.73,1497,290,65.9,325,29.1,40,54.5,Yellow,Low
+Mokokchung,Nagaland,Nagaland,26.32,94.52,1632,1332,841.3,303,38.0,40,60.4,Orange,Medium
+Tuensang,Nagaland,Nagaland,26.27,94.82,1481,140,32.1,5,19.2,40,55.6,Yellow,Low
+Mon,Nagaland,Nagaland,26.72,95.03,2024,584,279.0,87,34.7,40,66.2,Orange,Medium
+Wokha,Nagaland,Nagaland,26.1,94.26,1732,204,84.7,36,30.8,40,60.2,Orange,Medium
+Phek,Nagaland,Nagaland,25.67,94.52,2073,533,164.8,529,41.5,40,67.4,Orange,Medium
+Zunheboto,Nagaland,Nagaland,25.97,94.52,1920,302,142.7,5,28.5,40,64.1,Orange,Medium
+Kiphire,Nagaland,Nagaland,25.83,94.78,1657,448,204.9,119,24.3,40,56.0,Yellow,Low
+Chumukedima,Nagaland,Nagaland,25.86,93.72,2203,400,101.3,393,26.0,40,58.1,Yellow,Low
+Agartala,Tripura,Tripura,23.83,91.28,2322,1143,239.8,136,28.8,40,62.9,Orange,Medium
+Dharmanagar,Tripura,Tripura,24.38,92.17,2107,575,706.3,321,18.3,40,55.3,Yellow,Low
+Kailashahar,Tripura,Tripura,24.33,92.01,1423,1239,583.9,40,17.3,40,56.5,Yellow,Low
+Ambassa,Tripura,Tripura,23.93,91.85,2157,628,208.9,5,0.5,40,47.7,Yellow,Low
+Khowai,Tripura,Tripura,24.08,91.61,1877,423,183.1,5,15.5,40,56.8,Yellow,Low
+Teliamura,Tripura,Tripura,24.02,91.52,2015,204,89.0,5,26.1,40,58.1,Yellow,Low
+Sabroom,Tripura,Tripura,23.0,91.73,2370,551,123.6,102,20.1,40,57.2,Yellow,Low
+Belonia,Tripura,Tripura,23.25,91.45,2499,526,156.5,5,14.8,40,61.4,Orange,Medium
+Udaipur,Tripura,Tripura,23.53,91.48,2198,333,152.8,7,21.7,40,60.8,Orange,Medium
+Dhalai,Tripura,Tripura,23.96,91.87,2238,2224,500.1,114,20.9,40,60.1,Orange,Medium
+Shillong,Meghalaya,Meghalaya,25.58,91.89,3419,636,131.9,5,25.7,40,73.0,Orange,Medium
+Tura,Meghalaya,Meghalaya,25.52,90.22,3144,435,360.9,201,23.4,40,72.2,Orange,Medium
+Cherrapunji,Meghalaya,Meghalaya,25.28,91.72,3438,406,168.6,8,31.3,40,70.5,Orange,Medium
+Mawsynram,Meghalaya,Meghalaya,25.3,91.58,3641,405,366.4,167,24.9,40,74.9,Orange,Medium
+Nongpoh,Meghalaya,Meghalaya,25.9,91.88,2424,788,632.5,172,20.6,40,63.8,Orange,Medium
+Jowai,Meghalaya,Meghalaya,25.45,92.2,3349,1124,422.2,320,9.2,40,59.8,Yellow,Low
+Nongstoin,Meghalaya,Meghalaya,25.52,91.26,3248,993,379.3,5,38.0,40,75.7,Orange,Medium
+Baghmara,Meghalaya,Meghalaya,25.2,90.64,3436,178,61.0,435,40.4,40,72.2,Orange,Medium
+Williamnagar,Meghalaya,Meghalaya,25.48,90.6,3805,418,271.6,63,30.6,40,78.1,Orange,Medium
+Resubelpara,Meghalaya,Meghalaya,25.92,90.72,3195,663,150.1,24,48.0,40,80.8,Red,High
+Kokrajhar,Assam,Assam,26.4,90.27,1554,2215,952.0,179,12.7,40,56.0,Yellow,Low
+Bongaigaon,Assam,Assam,26.48,90.56,2203,718,426.6,5,11.4,40,58.9,Yellow,Low
+Barpeta,Assam,Assam,26.32,91.0,1721,389,132.6,5,0.5,40,41.2,Yellow,Low
+Dhubri,Assam,Assam,26.02,89.98,1440,1204,370.5,5,7.2,40,49.1,Yellow,Low
+Goalpara,Assam,Assam,26.17,90.62,1883,2335,850.7,272,1.2,40,51.3,Yellow,Low
+Morigaon,Assam,Assam,26.25,92.35,1686,1456,426.5,5,24.7,40,60.1,Orange,Medium
+Nagaon,Assam,Assam,26.35,92.68,2077,436,104.0,5,8.1,40,50.3,Yellow,Low
+Hojai,Assam,Assam,26.0,92.85,1388,245,72.2,19,14.1,40,49.8,Yellow,Low
+Karbi Anglong,Assam,Assam,26.0,93.43,1753,2058,1327.8,5,0.5,40,54.8,Yellow,Low
+Haflong,Assam,Assam,25.17,93.02,1895,996,361.2,5,11.9,40,55.2,Yellow,Low
